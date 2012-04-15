@@ -1,0 +1,4 @@
+code=net.sangeeth.jssdk.jsp.CodeTagHandler
+ampersand=net.sangeeth.jssdk.jsp.AmpersandTagHandler
+forEach=net.sangeeth.jssdk.jsp.jstl.ForEachTagHandler
+if=net.sangeeth.jssdk.jsp.jstl.IfTagHandler

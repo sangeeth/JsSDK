@@ -1,0 +1,49 @@
+<project name="Core SDK Libraries" default="dist" basedir=".">
+	<property name="version" value="1.0b"/>
+	<property name="project.home" location="../../"/>
+	<property name="component.home" location="."/>
+	<property name="src.home" location="${component.home}/src"/>
+	<property name="build.home" location="${project.home}/build/components/sdk"/>
+	<property name="dist.home" location="${project.home}/dist"/>
+	<property name="lib.dist.home" location="${dist.home}/lib"/>		
+	<property name="extlib.dist.home" location="${lib.dist.home}/ext"/>	
+	<property name="lib.home" location="${project.home}/lib"/>
+	<property name="jssdk.jar" value="jssdk${version}.jar"/>
+	<path id="classpath">
+		<fileset dir="${lib.home}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<target name="compile">
+		<mkdir dir="${build.home}"/>
+		<javac srcdir="${src.home}/java" 
+			   destdir="${build.home}">
+			<classpath>
+				<path refid="classpath"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="dist" depends="compile">
+		<mkdir dir="${lib.dist.home}"/>
+	    <jar destfile="${lib.dist.home}/${jssdk.jar}">
+	    	<fileset dir="${build.home}">
+	    	</fileset>
+	    	<fileset dir="${src.home}/java">
+	    		<exclude name="**/*.java"/>
+	    	</fileset>
+	    </jar>
+		<mkdir dir="${extlib.dist.home}"/>
+	    <copy todir="${extlib.dist.home}">
+			<fileset dir="${lib.home}">
+				<include name="dwr.jar"/>
+				<include name="jsdk-24.jar"/>				
+				<include name="jstl.jar"/>
+				<include name="standard.jar"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="clean">
+		<delete dir="${build.home}"/>
+		<delete dir="${dist.home}"/>		
+	</target>
+</project>

@@ -1,0 +1,323 @@
+--------------------------------------------------------------------------------
+                    JavaScript 1.3 LL(1) Grammar
+                    
+                         by sangeeth kumar .s
+--------------------------------------------------------------------------------
+Program ::= 
+        SourceElements
+
+SourceElements ::= 
+        SourceElement [ SourceElements ]
+
+SourceElement ::= 
+        FunctionDeclaration
+        Statement
+
+
+FunctionDeclaration ::= 
+        function Identifier FunctionDeclarationPart
+
+FunctionDeclarationPart ::= 
+        ( [FormalParameterList] )  { [FunctionBody] }
+
+
+FormalParameterList ::= 
+        Identifier [, FormalParamterList]
+
+FunctionBody ::= 
+        SourceElements
+
+Statement ::=
+        DirectiveStatement
+        LabellableStatement
+        Identifier IdentifierStatementPart ;
+        ExpressionStatement
+
+DirectiveStatement ::=
+        Directive ( [DirectiveArgumentList] ) ;
+  
+Directive ::=
+        $import
+        $importView
+        $importInterface
+
+DirectiveArgumentList ::=
+        StringLiteral [, DirectiveArgumentList ]
+
+
+LabellableStatement::=  
+        Block
+        VariableStatement
+        EmptyStatement
+        IfStatement
+        IterationStatement
+        ContinueStatement
+        BreakStatement
+        ReturnStatement
+        WithStatement
+        SwitchStatement
+        ThrowStatement
+        TryStatement
+           
+Block ::=  
+        { [StatementList]  }
+
+StatementList ::= 
+        Statement [StatementList]
+
+VariableStatement ::=  
+        var VariableDeclarationList ;
+
+VariableDeclarationList ::=  
+        VariableDeclaration [, VariableDeclarationList]
+
+VariableDeclaration ::= 
+        Identifier [Initialiser]
+
+Initialiser ::=  
+        = Expression
+
+EmptyStatement ::=  
+        ;
+
+IfStatement ::=  
+        if  ( Expression ) Statement [else Statement]
+       
+IterationStatement ::=  
+        do Statement while ( Expression )  ;
+        while ( Expression ) Statement
+        for ( ForStatementPart
+
+ForStatementPart ::=
+        var VariableDeclaration ForStatementVarPart
+        ForStatementRest
+        Identifier ForStatementIdentifierPart
+        NoIdentifierComputableExpressionPart ExpressionRest ForStatementRest        
+
+ForStatementVarPart ::=
+        ForStatementAllRest
+        , VariableDeclarationList ForStatementRest
+  
+ForStatementRest ::=  
+        ; [Expression] ; [Expression] ) Statement
+
+ForInStatementRest ::= 
+        in Expression ) Statement
+
+ForStatementIdentifierPart ::=
+        ForStatementAllRest
+        MemberExpressionPart ForStatementAllRest
+        ExpressionRest ForStatementRest
+  
+ForStatementAllRest::=
+        ForStatementRest
+        ForInStatementRest
+
+ContinueStatement ::=  
+        continue [Identifier] ;
+
+BreakStatement ::=  
+        break [Identifier] ;
+
+ReturnStatement ::= 
+        return [Expression] ;
+
+WithStatement ::= 
+        with ( Expression ) Statement
+
+SwitchStatement ::= 
+        switch ( Expression ) CaseBlock
+
+CaseBlock ::=  
+        { [CaseClauses]  [DefaultClause] }
+
+CaseClauses ::= 
+        CaseClause CaseClauses
+
+CaseClause ::=  
+        case Expression : [StatementList]
+
+DefaultClause ::=  
+        default : [StatementList]
+
+ThrowStatement ::=  
+        throw Expression ;
+
+TryStatement ::  
+        try Block [Catch] [Finally]
+
+Catch ::=  
+        catch ( Identifier ) Block
+
+Finally ::=  
+        finally Block
+
+IdentifierStatementPart ::=  
+        :  LabellableStatement 
+        IdentifierExpressionPart [ExpressionRest] ;
+
+ExpressionStatement ::=
+        LiteralExpression [NoAssignmentExpressionRest]  ;
+        NoIdentifierComputableExpressionPart [ExpressionRest] ;
+        DeleteExpression [ExpressionRest] ;
+        void PrefixExpression [ExpressionRest] ;
+       
+ThisExpression ::=
+  			this [ThisExpressionPart]
+  
+ThisExpressionPart ::=
+  	  	arrayLiteralExpression
+	     	. IdentifierExpression
+       
+NoIdentifierComputableExpressionPart ::=
+        NewExpression
+        FunctionExpression
+        ArrayLiteralExpression
+        ObjectLiteralExpression
+        PrefixExpression
+        LiteralExpression
+        ThisExpression
+        ( Expression )[. IdentifierExpression]
+
+Expression ::=
+        LiteralExpression [NoAssignmentExpressionRest]
+        ExpressionPart [ExpressionRest]
+
+ExpressionPart ::=
+        ComputableExpressionPart
+        DeleteExpression
+        void PrefixExpression
+        
+ComputableExpressionPart ::=
+        IdentifierExpression   
+        NoIdentifierComputableExpressionPart
+
+ExpressionRest ::= 
+        AssignmentExpressionPart
+        NoAssignmentExpressionRest
+
+NoAssignmentExpressionRest ::= 
+        , Expression
+        ? Expression : Expression
+        BinaryExpressionPart
+        RelationalExpressionPart
+
+NewExpression ::= 
+        new MemberExpression
+   
+MemberExpression ::=  
+        Identifier [MemberExpressionPart]
+
+MemberExpressionPart ::=
+        . MemberExpression
+        [ [Expression] ] [MemberExpressionPart]
+        Arguments [MemberExpressionPart]
+
+Arguments ::=  
+        ( [ArgumentList] )
+
+ArgumentList ::=  
+        Expression [, ArgumentList]       
+
+IdentifierExpression ::= 
+        Identifier [IdentifierExpressionPart]
+
+IdentifierExpressionPart ::=  
+        PostfixOperator
+        MemberExpressionPart PostfixOperator
+       
+AssignmentExpressionPart ::=  
+        AssignmentOperator Expression
+
+AssignmentOperator :
+        = *= /= %= += -= <<= >>= >>>= &= ^= |=      
+
+FunctionExpression ::=  
+        function [Identifier] FunctionDeclarationPart
+
+LiteralExpression ::=  
+        NumericLiteral
+        BooleanLiteral
+        StringLiteral [MemberExpressionPart]
+        NullLiteral
+        RegexLiteral
+
+ArrayLiteralExpression :   
+        [  ArrayLiteralExpressionPart  ]
+
+ArrayLiteralExpressionPart ::=
+        , ArrayLiteralExpressionPart
+        SingularExpression  [ArrayLiteralExpressionPart]
+
+ObjectLiteralExpression ::=   { [PropertyNameAndValueList] }
+
+PropertyNameAndValueList ::= 
+         PropertyName : SingularExpression  [, PropertyNameAndValueList]
+
+PropertyName ::=   
+        Identifier
+        StringLiteral
+        NumericLiteral
+
+DeleteExpression ::=
+        delete DeleteExpressionPart
+
+DeleteExpressionPart ::=
+        NewExpression
+        FunctionExpression
+        ArrayLiteralExpression
+        ObjectLiteralExpression
+        ThisExpression
+        (  RightHandExpression )
+        IdentifierExpression
+
+PrefixExpression ::=
+        typeof PrefixExpressionPart
+        ++ PrefixExpressionPart
+        -- PrefixExpressionPart
+        + PrefixExpressionPart
+        - PrefixExpressionPart
+        ~ PrefixExpressionPart
+        ! PrefixExpressionPart
+
+PrefixExpressionPart ::=
+        NewExpression            
+        this . IdentifierExpression
+        (  PrefixExpression )
+        IdentifierExpression
+
+BinaryExpressionPart ::=
+        +   Expression
+        -   Expression
+        /   Expression
+        %   Expression
+        <<  Expression
+        >>  Expression
+        >>> Expression
+        &   Expression
+        ^   Expression
+        |   Expression
+                                          
+RelationalExpressionPart ::=
+        < Expression
+        > Expression
+        <= Expression
+        >= Expression
+        == Expression
+        != Expression
+        || Expression
+        &&  Expression
+        instanceof  PrefixExpressionPart
+
+SingularExpression ::=
+        LiteralExpression [SingularNoAssignmentExpressionRest]
+        ExpressionPart [SingularExpressionRest]
+
+SingularExpressionRest ::=
+        AssignmentExpressionPart
+        SingularNoAssignmentExpressionRest
+
+SingularNoAssignmentExpressionRest ::=
+        ? Expression : Expression
+        BinaryExpressionPart
+        RelationalExpressionPart

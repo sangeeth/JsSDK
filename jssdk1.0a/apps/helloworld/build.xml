@@ -1,0 +1,79 @@
+<project name="HelloWorld Application" default="dist" basedir=".">
+	<property name="version" value="1.0"/>
+    <property name="project.home" location="../../"/>
+	<property name="src.home" location="${project.home}/apps/helloworld/src"/>
+	<property name="build.home" location="${project.home}/build/apps/helloworld"/>
+	<property name="classes.home" location="${build.home}/classes"/>
+	<property name="webapp.home" location="${src.home}/webapp"/>
+	<property name="war.home" location="${build.home}/webapp"/>	
+	<property name="dist.home" location="${project.home}/dist"/>
+	<property name="app.dist.home" location="${dist.home}/apps"/>
+	<property name="lib.home" location="${dist.home}/lib"/>
+	<property name="jso.home" location="${build.home}/jso"/>
+	<property name="app.name" value="helloworld${version}"/>
+	<property name="app.jar" value="${app.name}.jar"/>
+	<property name="app.war" value="${app.dist.home}/${app.name}.war"/>
+	<path id="classpath">
+		<fileset dir="${lib.home}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<target name="compile">
+		<mkdir dir="${classes.home}"/>
+		<javac srcdir="${src.home}/java" 
+			   destdir="${classes.home}">
+			<classpath>
+				<path refid="classpath"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="package" depends="compile">
+		<mkdir dir="${war.home}/WEB-INF/lib"/>
+	    <jar destfile="${war.home}/WEB-INF/lib/${app.jar}">
+	    	<fileset dir="${classes.home}"/>
+	    	<fileset dir="${src.home}">
+	    		<exclude name="**/*.java"/>
+	    	</fileset>
+	    </jar>
+	</target>	
+	<target name="compile_js" depends="package">
+		<mkdir dir="${jso.home}"/>
+		<java fork="true" classname="net.sangeeth.jssdk.tool.JSCompiler">
+			<arg value="-i${webapp.home}/WEB-INF/dwr.xml"/>
+			<arg value="-v${webapp.home}"/>
+			<arg value="-c${app.name}"/>
+			<arg value="-d${jso.home}"/>
+			<arg value="${webapp.home}/scripts/helloworld.js"/>
+			<classpath>
+				<fileset dir="${war.home}/WEB-INF/lib/">
+					<include name="**/*.jar"/>
+				</fileset>
+				<fileset dir="${lib.home}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+		<delete dir="work"/>
+	</target>
+	<target name="dist" depends="compile_js">
+	    <copy todir="${war.home}">
+			<fileset dir="${webapp.home}"/>
+		</copy>
+	    <copy todir="${war.home}/scripts">
+			<fileset dir="${jso.home}">
+				<include name="*.jso"/>
+			</fileset>
+		</copy>
+	    <copy todir="${war.home}/WEB-INF/lib" flatten="true">
+			<fileset dir="${lib.home}" includes="**/*.jar"/>
+		</copy>
+		<mkdir dir="${app.dist.home}"/>
+		<war basedir="${war.home}" 
+			 webxml="${webapp.home}/WEB-INF/web.xml"
+			 destfile="${app.war}"/>
+	</target>
+	<target name="clean">
+		<delete dir="${build.home}"/>
+		<delete file="${app.war}"/>
+	</target>
+</project>

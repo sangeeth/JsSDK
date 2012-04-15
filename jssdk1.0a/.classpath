@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="apps/helloworld/src/java"/>
+	<classpathentry kind="src" path="core/sdk/src/test/java"/>
+	<classpathentry kind="src" path="core/sdk/src/java"/>
+	<classpathentry kind="src" path="apps/blogger/src/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/dwr.jar"/>
+	<classpathentry kind="lib" path="lib/jsdk-24.jar"/>
+	<classpathentry kind="lib" path="lib/jstl.jar"/>
+	<classpathentry kind="lib" path="lib/standard.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

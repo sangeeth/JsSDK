@@ -1,0 +1,66 @@
+<project name="JsSDK Project" default="dist" basedir=".">
+	<property name="version" value="1.0a"/>
+	<property name="www.dist.home" location="www/resources/dist"/>
+	<target name="publish" depends="dist">
+		<zip destfile="${www.dist.home}/jssdk${version}-all.zip">
+			<fileset dir=".">
+				<include name="apps/**"/>
+				<include name="core/**"/>
+				<include name="lib/**"/>
+				<include name="dist/**"/>				
+				<include name="build.xml"/>
+			</fileset>
+		</zip>
+		<zip destfile="${www.dist.home}/jssdk${version}-src.zip">
+			<fileset dir=".">
+				<include name="apps/**"/>
+				<include name="core/**"/>
+				<include name="lib/**"/>
+				<include name="build.xml"/>
+			</fileset>
+		</zip>
+		<zip destfile="${www.dist.home}/jssdk${version}-bin.zip">
+			<fileset dir="dist/lib">
+			</fileset>
+		</zip>
+	</target>
+	<target name="dist" depends="dist_core,dist_apps">
+	</target>
+	<target name="clean" depends="clean_core,clean_apps">
+		<delete dir="build"/>
+		<delete dir="dist"/>		
+	</target>
+	
+	<target name="dist_core">
+		<ant antfile="core/sdk/build.xml" target="dist">
+			<property name="project.home" location="."/>
+			<property name="component.home" location="core/sdk"/>
+			<property name="version" value="${version}"/>			
+		</ant>
+	</target>
+
+	<target name="clean_core">
+		<ant antfile="core/sdk/build.xml" target="clean">
+			<property name="project.home" location="."/>
+		</ant>
+	</target>
+	
+	<target name="dist_apps">
+		<ant antfile="apps/blogger/build.xml" target="dist">
+			<property name="project.home" location="."/>
+		</ant>
+		<ant antfile="apps/helloworld/build.xml" target="dist">
+			<property name="project.home" location="."/>
+		</ant>
+	</target>
+
+	<target name="clean_apps">
+		<ant antfile="apps/blogger/build.xml" target="clean">
+			<property name="project.home" location="."/>
+		</ant>
+		<ant antfile="apps/helloworld/build.xml" target="clean">
+			<property name="project.home" location="."/>
+		</ant>
+	</target>
+	
+</project>

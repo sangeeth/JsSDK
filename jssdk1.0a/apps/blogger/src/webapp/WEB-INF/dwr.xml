@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN" "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
+
+<dwr>
+    <allow>
+        <convert converter="bean" match="net.sangeeth.blog.Message"/>
+        <convert converter="bean" match="net.sangeeth.blog.Comment"/>		
+		
+        <create creator="new" javascript="blogger.BlogService" class="net.sangeeth.blog.Blog">
+            <include method="getMessage"/>
+			<include method="getMessages"/>
+            <include method="removeMessage"/>
+			<include method="addComment"/>
+			<include method="updateMessage"/>
+			<include method="publish"/>
+        </create>
+		
+        <create creator="new" javascript="blogger.BlogLoginService" class="net.sangeeth.blog.LoginService">
+            <include method="login"/>
+        </create>
+  </allow>
+</dwr>
